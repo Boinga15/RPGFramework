@@ -1,5 +1,6 @@
 import pygame
 import time
+from typing import List
 
 class Game:
     def __init__(self):
@@ -16,6 +17,9 @@ class Game:
         # Buffers
         self.story_buffer = []
         self.info_buffer = []
+
+        # Game Values
+        self.party: List[character.Character] = []
 
         # Scroll positions
         self.story_scroll = 0
@@ -157,3 +161,5 @@ class Game:
                 total += entry["height"] + 10
 
         return total
+
+import framework.character as character

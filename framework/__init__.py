@@ -1,3 +1,3 @@
 from .game import *
-
-__all__ = ["Game"]
+from .character import *
+from .item import *
