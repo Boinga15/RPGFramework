@@ -99,6 +99,17 @@ class Game:
         self.story_buffer.append(entry)
 
     def infoText(self, text):
+        if (text == ""):
+            surf = self.font.render("", True, (0, 0, 0))
+            surfSize = self.font.render("A", True, (0, 0, 0))
+            entry = {
+                "type": "text",
+                "content": "",
+                "surface": surf,
+                "height": surfSize.get_height() + 5
+            }
+            self.info_buffer.append(entry)
+
         wrapped = self.wrap_text(text, self.font, self.info_rect.width - 20)
         for line in wrapped:
             surf = self.font.render(line, True, (0, 0, 0))

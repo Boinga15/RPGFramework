@@ -11,14 +11,14 @@ class Character:
         self.health = health
         self.inventory: List[item.Item] = []
 
-        self.carryCapacity = 10
+        self.carryCapacity = carryCapacity
     
     def getMaxHealth(self):
         return self.baseMaxHealth
 
     def changehealth(self, amount: int):
         self.health = min(self.getMaxHealth(), max(0, self.health + amount))
-
+    
     def getCurrentCarry(self):
         total = 0
 
@@ -27,6 +27,10 @@ class Character:
         
         return total
 
+    def getMaxCarry(self):
+        return self.carryCapacity
+
+    # Adds items to the characters inventory, returning the number of items that the program failed to add.
     def addItem(self, itemToAdd, amount: int = 1):
         itemsAdded = 0
 
@@ -40,14 +44,15 @@ class Character:
             
             if not addedElement:
                 if self.getCurrentCarry() + itemToAdd.carryCost > self.carryCapacity:
-                    return False
+                    return amount - itemsAdded
 
                 self.inventory.append(copy.deepcopy(itemToAdd))
             
             itemsAdded += 1
         
-        return True
+        return 0
 
+    # Counts the number of items that are of a given class in this character's inventory.
     def countItems(self, itemClass):
         count = 0
 
@@ -57,6 +62,7 @@ class Character:
         
         return count
 
+    # Removes a set number of items from the character's inventory, returning the number of items that couldn't be removed.
     def removeItems(self, itemClass, amount: int = 1):
         itemsToRemove = amount
 
@@ -69,12 +75,14 @@ class Character:
                 cIndex -= 1
             
             if cIndex == -1:
-                return False
+                return itemsToRemove + 1
             
             self.inventory[cIndex].quantity -= 1
 
             if self.inventory[cIndex].quantity <= 0:
                 self.inventory.pop(cIndex)
+        
+        return 0
 
 
 import framework.item as item

@@ -1,20 +1,21 @@
 import threading
 import os
 
-from framework import *
+from framework import * 
 
+# Game Functions
 def gameStart(game: Game):
     os.system("cls")
 
     game.party.append(Character("Agent", 100))
+    game.party.append(Character("Ashley", 100))
 
     game.writeText("This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works.")
     game.infoText("Health: 100")
     input("> ")
-
-    game.party[0].addItem(TestItem(), 8)
-    game.party[0].addItem(TestItem(), 9999)
-    game.party[0].removeItems(TestItem, 3)
+    
+    game.party[0].addItem(TestItem(), 20)
+    game.party[1].addItem(TestItem(), 20)
 
     game.clearStory()
     game.writeText("This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works.")
@@ -32,7 +33,7 @@ def gameStart(game: Game):
             else:
                 game.infoText(f"{item.name} (X{item.quantity})")
     
-    input("> ")
+    inventoryManagement(game)
 
     # Closing the game.
     game.quit()
