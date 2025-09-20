@@ -13,6 +13,9 @@ class Item:
         self.standardActions = ["Give", "Discard"]
         self.battleActions = ["Give"]
     
+    def getBattleActions(self, gameInstance):
+        return self.battleActions
+
     def doStandardAction(self, action: str, gameInstance, owningCharacter):
         match action:
             case "Give":
@@ -113,7 +116,107 @@ class Item:
                         os.system("cls")
                         print("Invalid input, please try again.")
 
+    # Called when an item's action is used continuously.
+    def duringBattleAction(self, action: str, gameInstance, battleInstance, owningCharacter):
+        pass
+
+
+    # Called when an item's action is used mid-battle.
     def doBattleAction(self, action: str, gameInstance, battleInstance, owningCharacter):
+        match action:
+            case "Give":
+                data = owningCharacter.heldAction["data"]
+
+                tempItem = copy.deepcopy(self)
+                tempItem.quantity = 1
+
+                addedAmount = min(self.quantity, data[1])
+                quantityLeft = data[0].addItem(tempItem, addedAmount)
+                self.quantity -= min(self.quantity, data[1]) - quantityLeft
+
+                gameInstance.writeText(f"{owningCharacter.name} gave {data[0].name} {addedAmount} {self.name}")
+
+                if self.quantity <= 0:
+                    owningCharacter.inventory.remove(self)
+
+
+    # Called when an item's action is first selected.
+    def onActionSelect(self, action: str, gameInstance, battleInstance, owningCharacter):
+        match action:
+            case "Give":
+                os.system("cls")
+                isDone = False
+
+                # End early if there's only one character.
+                if len(gameInstance.party) == 1:
+                    print("There is only one person in the party.")
+                    input("\nPress enter to continue...")
+                    return False
+                
+                while not isDone:
+                    print("Select a character:")
+
+                    cIndex = 1
+                    for character in gameInstance.party:
+                        print(f"{cIndex}: {character.name}")
+                        cIndex += 1
+
+                    print(f"{cIndex}: Cancel")
+
+                    try:
+                        charId = int(input("\n> "))
+                        os.system("cls")
+
+                        if not (0 < charId <= len(gameInstance.party) + 1):
+                            print("Invalid input, please try again.\n")
+                        elif charId == len(gameInstance.party) + 1:
+                            return
+                                       
+                        elif gameInstance.party[charId - 1] == owningCharacter:
+                            print("You cannot transfer items to the same person.\n")            
+
+                        else:
+                            isDone2 = False
+                            targetCharacter = gameInstance.party[charId - 1]
+
+                            while not isDone2:
+                                print(f"{self.name} ({self.quantity} / {self.maxQuantity})\n")
+                                print("Enter how much of this item you wish to transfer (enter 0 to cancel):")
+
+                                try:
+                                    amount = int(input("\n> "))
+                                    os.system("cls")
+
+                                    if amount < 0:
+                                        print("Invalid input, please try again.")
+                                    
+                                    else:
+                                        owningCharacter.battleDelay = [1, 0, 1]
+                                        owningCharacter.heldAction = {
+                                            "type": "ITEM",
+                                            "item_reference": self,
+                                            "action": "Give",
+                                            "data": [targetCharacter, amount],
+                                            "display": "Winding Up Give"
+                                        }
+
+                                        return True
+                                
+                                except ValueError:
+                                    os.system("cls")
+                                    print("Invalid input, please try again.")
+
+                            return False
+                    
+                    except ValueError:
+                        os.system("cls")
+                        print("Invalid input, please try again.")
+
+        
+        return False
+
+    # Called every step during battle.
+    def onBattleStep(self, gameInstance, battleInstance, owningCharacter):
         pass
 
 class TestItem(Item):

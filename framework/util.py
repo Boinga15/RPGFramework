@@ -1,13 +1,11 @@
 import os
 
-from framework import Game
-
 # Pre-Implemented Functions
 # Used to display auto-wrapping text on the console.
 def neatPrint(inp: str, wrapLength: int = 80):
     pass
 
-# Useful for displaying optiosn to the player. "choices" should be a dictionary of type string --> data. Returns the selected choice's data.
+# Useful for displaying options to the player. "choices" should be a dictionary of type string --> data. Returns the selected choice's data.
 def choice(choices, displayChoices = True):
     hasSelected = False
     
@@ -34,28 +32,29 @@ def choice(choices, displayChoices = True):
     
     return choices[list(choices.keys())[op - 1]]
 
+# Very similar to choice, however it auto-displays the choices and also doesn't loop.
+def noLoopChoice(choices):
+    for i, choice in enumerate(choices.keys(), start=1):
+        print(f"{i}: {choice}")
+
+    print("") 
+
+    try:
+        op = int(input("> "))
+
+        if op < 1 or op > len(choices):
+            return None, None
+        else:
+            return (op - 1), choices[list(choices.keys())[op - 1]]
+    
+    except ValueError:
+        return None, None
+
+os.system("cls")
+
 
 # Allows for inventory management through dropping and gifting items.
-def inventoryManagement(game: Game):
-    def noLoopChoice(choices):
-        for i, choice in enumerate(choices.keys(), start=1):
-            print(f"{i}: {choice}")
-
-        print("") 
-    
-        try:
-            op = int(input("> "))
-
-            if op < 1 or op > len(choices):
-                return None, None
-            else:
-                return (op - 1), choices[list(choices.keys())[op - 1]]
-        
-        except ValueError:
-            return None, None
-
-    os.system("cls")
-
+def inventoryManagement(game):
     isDone = False
 
     while not isDone:

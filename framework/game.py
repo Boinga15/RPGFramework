@@ -66,8 +66,9 @@ class Game:
 
     def writeText(self, text):
         if (len(self.story_buffer) > 0):
+            displaySurface = self.font.render("", True, (0, 0, 0))
             surface = self.font.render("A", True, (0, 0, 0))
-            self.story_buffer.append({"type": "text", "content": "", "surface": surface, "height": surface.get_height()})
+            self.story_buffer.append({"type": "text", "content": "", "surface": displaySurface, "height": surface.get_height()})
 
         wrapped = self.wrap_text(text, self.font, self.story_rect.width - 20)
         for line in wrapped:

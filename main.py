@@ -33,7 +33,8 @@ def gameStart(game: Game):
             else:
                 game.infoText(f"{item.name} (X{item.quantity})")
     
-    inventoryManagement(game)
+    battle = Battle(game, [TestEnemy(game), TestEnemy(game), TestEnemy(game)])
+    result = battle.startBattle()
 
     # Closing the game.
     game.quit()
