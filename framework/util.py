@@ -5,7 +5,7 @@ import os
 def neatPrint(inp: str, wrapLength: int = 80):
     pass
 
-# Useful for displaying options to the player. "choices" should be a dictionary of type string --> data. Returns the selected choice's data.
+# Useful for displaying options to the player. "choices" should be a dictionary of type string --> any. Returns the selected choice's data.
 def choice(choices, displayChoices = True):
     hasSelected = False
     

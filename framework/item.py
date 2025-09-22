@@ -1,6 +1,7 @@
 import os
 import copy
 
+# Used for items that characters in the party can pick up, add to their inventory, and use both outside of combat and in combat.
 class Item:
     def __init__(self, name: str = "", description: str = "", carryCost: int = 1, maxQuantity: int = 1):
         self.name = name

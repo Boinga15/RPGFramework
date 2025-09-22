@@ -4,3 +4,4 @@ from .character import *
 from .item import *
 from .enemy import *
 from .battle import *
+from .container import *

@@ -2,6 +2,7 @@ from framework import Game
 
 import random
 
+# Used for enemies in combat. Can also be used for more compliated NPCs who you anticipate may be an enemy in a future encounter.
 class Enemy:
     def __init__(self, game: Game, name, health):
         self.game = game

@@ -2,6 +2,7 @@ import pygame
 import time
 from typing import List
 
+# The main game class, used to manage the game's variables between states. Create a child class of this class if you want to include more functions or variables. The object of this class should be passed into every function you call during the game.
 class Game:
     def __init__(self):
         pygame.init()

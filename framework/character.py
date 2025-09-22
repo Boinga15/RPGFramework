@@ -4,6 +4,7 @@ import copy
 
 from framework.util import noLoopChoice
 
+# A character inside of the player's party. Can also be used for NPCs that you anticipate may join the party.
 class Character:
     def __init__(self, name: str = "", health: int = 100, carryCapacity: int = 10, baseBattleActions = ["Attack", "Block", "Dodge", "Use Item"]):
         self.name = name
@@ -30,6 +31,7 @@ class Character:
     def getMaxHealth(self):
         return self.baseMaxHealth
 
+    # Changes health, allowing for adjustment through attacks and also keeping the final health value between zero and the character's maximum.
     def changeHealth(self, amount: int, isAttack = False):
         changeAmount = amount
 
@@ -44,6 +46,7 @@ class Character:
 
         return changeAmount
 
+    # The damage multiplier of this character's attacks.
     def getDamageMultiplier(self):
         return 1
     
@@ -322,13 +325,13 @@ class Character:
         while itemsAdded < amount:
             addedElement = False
             for item in self.inventory:
-                if type(item) == type(itemToAdd) and item.quantity < item.maxQuantity:
+                if type(item) == type(itemToAdd) and item.name == itemToAdd.name and item.quantity < item.maxQuantity:
                     item.quantity += 1
                     addedElement = True
                     break
             
             if not addedElement:
-                if self.getCurrentCarry() + itemToAdd.carryCost > self.carryCapacity:
+                if self.getCurrentCarry() + itemToAdd.carryCost > self.getMaxCarry():
                     return amount - itemsAdded
 
                 self.inventory.append(copy.deepcopy(itemToAdd))

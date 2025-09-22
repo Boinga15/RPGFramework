@@ -33,8 +33,17 @@ def gameStart(game: Game):
             else:
                 game.infoText(f"{item.name} (X{item.quantity})")
     
-    battle = Battle(game, [TestEnemy(game), TestEnemy(game), TestEnemy(game)])
-    result = battle.startBattle()
+    newItem = TestItem()
+    newItem.quantity = 5
+
+    newContainer = Container(game, "Closet", [
+        TestItem(),
+        TestItem(),
+        TestItem(),
+        newItem
+    ])
+
+    newContainer.openContainer()
 
     # Closing the game.
     game.quit()

@@ -5,11 +5,13 @@ from framework.util import noLoopChoice
 from typing import List
 import os
 
+# Useful for starting combat. Call alongside a list of enemies you want to use in the combat encounter in order to start a simple combat scenario. You can create child classes of this class in order to make combat scenarios with custom win or lose conditions.
 class Battle:
     def __init__(self, game: Game, enemies: List[Enemy]):
         self.game = game
         self.enemies = enemies
     
+    # Handles an actaul combat step. Override this function if you want to add extra things that happen per step.
     def doStep(self):
         shouldPause = False
 
@@ -35,32 +37,34 @@ class Battle:
         
         return shouldPause
 
+    # Checks the conditions of the fight to see if an end condition was met, returning 1 if all enemies were defeated, and -1 if all characters were defeated.
+    def checkForBattleEnds(self):
+        enemyAlive = False
+        
+        for enemy in self.enemies:
+            if enemy.health > 0:
+                enemyAlive = True
+        
+        if not enemyAlive:
+            return 1 # All Enemies Killed
+
+        playerAlive = False
+
+        for character in self.game.party:
+            if character.health > 0:
+                playerAlive = True
+                break
+        
+        if not playerAlive:
+            return -1 # Entire party KOd.
+
+        return 0 # No result yet.
+
+    # Call to start the combat encounter.
     def startBattle(self):
         self.game.clearStory()
 
         doingBattle = True
-
-        def checkForBattleEnds():
-            enemyAlive = False
-            
-            for enemy in self.enemies:
-                if enemy.health > 0:
-                    enemyAlive = True
-            
-            if not enemyAlive:
-                return 1 # All Enemies Killed
-
-            playerAlive = False
-
-            for character in self.game.party:
-                if character.health > 0:
-                    playerAlive = True
-                    break
-            
-            if not playerAlive:
-                return -1 # Entire party KOd.
-
-            return 0 # No result yet.
 
         def updateDisplay():
             os.system("cls")
@@ -161,7 +165,7 @@ class Battle:
                 input("Press enter to continue...")
             
             # Step 4 - Check for end of battles.
-            result = checkForBattleEnds()
+            result = self.checkForBattleEnds()
 
             if result != 0:
                 return result # End the battle. -1 = Party is down, 1 = All enemies defeated.
