@@ -152,18 +152,18 @@ def romanNumeralConversion(inputNumber: int):
     for key in conversionKeys.keys():
         requiredValue = conversionKeys[key]
         
-        while inputNumber > requiredValue:
+        while inputNumber >= requiredValue:
             inputNumber -= requiredValue
             outputString += key
         
         # Check for any subtractions (e.g. IX).
         for otherKey in conversionKeys.keys():
-            if conversionKeys[key] < conversionKeys[otherKey]:
+            if conversionKeys[key] <= conversionKeys[otherKey]:
                 continue
             
             finalValue = conversionKeys[key] - conversionKeys[otherKey]
-            if finalValue == inputNumber:
+            if finalValue <= inputNumber and finalValue != conversionKeys[otherKey]:
                 outputString += f"{otherKey}{key}"
-                return outputString
+                inputNumber -= finalValue
     
     return outputString

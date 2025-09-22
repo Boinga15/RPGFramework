@@ -12,6 +12,7 @@ def gameStart(game: Game):
 
     game.writeText("This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works. This is a test to see how well the code written works.")
     game.infoText("Health: 100")
+
     input("> ")
     
     game.party[0].addItem(TestItem(), 20)
