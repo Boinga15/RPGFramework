@@ -36,14 +36,8 @@ def gameStart(game: Game):
     newItem = TestItem()
     newItem.quantity = 5
 
-    newContainer = Container(game, "Closet", [
-        TestItem(),
-        TestItem(),
-        TestItem(),
-        newItem
-    ])
-
-    newContainer.openContainer()
+    newBattle = Battle(game, [TestEnemy(game), TestEnemy(game), TestEnemy(game)])
+    newBattle.startBattle()
 
     # Closing the game.
     game.quit()

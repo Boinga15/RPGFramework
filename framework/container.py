@@ -35,10 +35,10 @@ class Container:
                 return
 
             print(f"Choose an item to take from {self.name}:")
-            choices = {f"{it.name} (x{it.quantity}) <Item #{i + 1}>": it for i, it in enumerate(self.items)}
+            choices = {f"{i+1}: {it.name} (x{it.quantity})": it for i, it in enumerate(self.items)}
             choices["Back"] = "BACK"
 
-            _, targetItem = noLoopChoice(choices)
+            _, targetItem = noLoopChoice(choices, False)
             os.system("cls")
 
             if targetItem == "BACK":
@@ -119,10 +119,10 @@ class Container:
             # Choose item from character inventory
             while True:
                 print(f"Choose an item from {targetChar.name}'s inventory:")
-                choices = {f"{it.name} (x{it.quantity}) <Item #{i + 1}>": it for i, it in enumerate(targetChar.inventory)}
+                choices = {f"{i+1}: {it.name} (x{it.quantity})": it for i, it in enumerate(targetChar.inventory)}
                 choices["Back"] = "BACK"
 
-                _, targetItem = noLoopChoice(choices)
+                _, targetItem = noLoopChoice(choices, False)
                 os.system("cls")
 
                 if targetItem == "BACK":

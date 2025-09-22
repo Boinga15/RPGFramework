@@ -1,6 +1,7 @@
 from framework import Game
 
 import random
+import math
 
 # Used for enemies in combat. Can also be used for more compliated NPCs who you anticipate may be an enemy in a future encounter.
 class Enemy:
@@ -63,13 +64,19 @@ class Enemy:
     def onBeginAction(self, action, battleInstance):
         match action:
             case "Attack":
+                self.heldAction["display"] = "Attacking"
+
                 chosenTarget = random.choice(self.game.party)
                 changeAmount = chosenTarget.changeHealth(-3, True) * -1
 
-                self.game.writeText(f"{self.name} dealt {changeAmount} to {chosenTarget.name}")
+                changeAmount = math.floor(changeAmount * 100) / 100
+
+                self.game.writeText(f"{self.name} dealt {changeAmount} damage to {chosenTarget.name}")
 
 
             case "Crush":
+                self.heldAction["display"] = "Crushing"
+
                 chosenTarget = random.choice(self.game.party)
                 changeAmount = chosenTarget.changeHealth(-10, True) * -1
 
@@ -77,6 +84,8 @@ class Enemy:
 
 
             case "Heal":
+                self.heldAction["display"] = "Healing"
+
                 self.game.writeText(f"{self.name} healed 5 HP.")
                 self.changeHealth(5)
 
@@ -90,17 +99,13 @@ class Enemy:
 
         # Advance steps
         if self.battleDelay[0] > 0:
-            self.heldAction["display"] = f"Winding Up {(self.heldAction["action"])}"
             self.battleDelay[0] -= 1
             
             if self.battleDelay[0] <= 0:
                 self.onBeginAction(self.heldAction["action"], battleInstance)
                 returnValue = 1
-                
-                self.heldAction["display"] = f"Doing {(self.heldAction["action"])}"
             
         elif self.battleDelay[1] > 0:
-            self.heldAction["display"] = f"Doing {(self.heldAction["action"])}"
             self.battleDelay[1] -= 1
 
             if self.heldAction["type"] == "ITEM":

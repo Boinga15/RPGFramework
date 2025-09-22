@@ -126,6 +126,8 @@ class Item:
     def doBattleAction(self, action: str, gameInstance, battleInstance, owningCharacter):
         match action:
             case "Give":
+                owningCharacter.heldAction["display"] = "Giving Item"
+                
                 data = owningCharacter.heldAction["data"]
 
                 tempItem = copy.deepcopy(self)
@@ -198,7 +200,7 @@ class Item:
                                             "item_reference": self,
                                             "action": "Give",
                                             "data": [targetCharacter, amount],
-                                            "display": "Winding Up Give"
+                                            "display": "Giving Item"
                                         }
 
                                         return True

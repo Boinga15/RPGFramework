@@ -33,9 +33,12 @@ def choice(choices, displayChoices = True):
     return choices[list(choices.keys())[op - 1]]
 
 # Very similar to choice, however it auto-displays the choices and also doesn't loop.
-def noLoopChoice(choices):
+def noLoopChoice(choices, showIndexes = True):
     for i, choice in enumerate(choices.keys(), start=1):
-        print(f"{i}: {choice}")
+        if showIndexes:
+            print(f"{i}: {choice}")
+        else:
+            print(f"{choice}")
 
     print("") 
 
@@ -128,3 +131,39 @@ def inventoryManagement(game):
                         else:
                             itemRef.doStandardAction(action, game, game.party[charId])
                             isDone3 = True
+
+# Roman Numeral Conveter
+def romanNumeralConversion(inputNumber: int):
+    if inputNumber <= 0:
+        return "0"
+
+    outputString = ""
+    
+    conversionKeys = {
+        "M": 1000,
+        "D": 500,
+        "C": 100,
+        "L": 50,
+        "X": 10,
+        "V": 5,
+        "I": 1
+    }
+
+    for key in conversionKeys.keys():
+        requiredValue = conversionKeys[key]
+        
+        while inputNumber > requiredValue:
+            inputNumber -= requiredValue
+            outputString += key
+        
+        # Check for any subtractions (e.g. IX).
+        for otherKey in conversionKeys.keys():
+            if conversionKeys[key] < conversionKeys[otherKey]:
+                continue
+            
+            finalValue = conversionKeys[key] - conversionKeys[otherKey]
+            if finalValue == inputNumber:
+                outputString += f"{otherKey}{key}"
+                return outputString
+    
+    return outputString

@@ -1,9 +1,10 @@
 from framework.game import Game
 from framework.enemy import Enemy
-from framework.util import noLoopChoice
+from framework.util import noLoopChoice, romanNumeralConversion
 
 from typing import List
 import os
+import math
 
 # Useful for starting combat. Call alongside a list of enemies you want to use in the combat encounter in order to start a simple combat scenario. You can create child classes of this class in order to make combat scenarios with custom win or lose conditions.
 class Battle:
@@ -76,10 +77,10 @@ class Battle:
 
                 if character.health <= 0:
                     print("K.O.")
-                    print("-------------------------")
+                    print("\n-------------------------\n")
                     continue
 
-                print(f"Health: {character.health} / {character.getMaxHealth()}")
+                print(f"Health: {math.ceil(character.health)} / {character.getMaxHealth()}")
 
                 stepDisplay = ""
                 currentDelay = (character.battleDelay[0] if character.battleDelay[0] > 0 else (character.battleDelay[1] if character.battleDelay[1] > 0 else character.battleDelay[2]))
@@ -88,7 +89,13 @@ class Battle:
                     stepDisplay = f"({currentDelay})"
 
                 print(f"\nCurrent Action: {character.heldAction["display"]} {stepDisplay}")
-                print("-------------------------\n")
+
+                if len(character.inflictions) > 0:
+                    print("\nInflictions:")
+                    for infliction in character.inflictions:
+                        print(f"{infliction["name"]} {romanNumeralConversion(infliction["level"])}: {romanNumeralConversion(infliction["duration"])}")
+
+                print("\n-------------------------\n")
             
             print("==============================")
 
@@ -97,10 +104,10 @@ class Battle:
 
                 if enemy.health <= 0:
                     print("K.O.")
-                    print("-------------------------")
+                    print("\n-------------------------\n")
                     continue
 
-                print(f"Health: {enemy.health} / {enemy.getMaxHealth()}")
+                print(f"Health: {math.ceil(enemy.health)} / {enemy.getMaxHealth()}")
 
                 stepDisplay = ""
                 currentDelay = (enemy.battleDelay[0] if enemy.battleDelay[0] > 0 else (enemy.battleDelay[1] if enemy.battleDelay[1] > 0 else enemy.battleDelay[2]))
@@ -109,7 +116,12 @@ class Battle:
                     stepDisplay = f"({currentDelay})"
 
                 print(f"\nCurrent Action: {enemy.heldAction["display"]} {stepDisplay}")
-                print("-------------------------\n")
+
+                if len(enemy.inflictions) > 0:
+                    print("\nInflictions:")
+                    for infliction in enemy.inflictions:
+                        print(f"{infliction["name"]} {romanNumeralConversion(infliction["level"])}: {romanNumeralConversion(infliction["duration"])}")
+                print("\n-------------------------\n")
 
 
         def openCharacterActionMenu(character):

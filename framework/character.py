@@ -85,6 +85,8 @@ class Character:
     def onBeginAction(self, action, gameInstance, battleInstance):
         match action:
             case "Attack":
+                self.heldAction["display"] = "Attacking"
+
                 damageDealt = self.heldAction["data"][0].changeHealth(-1 * self.getDamageMultiplier() * 3) * -1
 
                 damageDealt = round(damageDealt * 100) / 100
@@ -92,10 +94,14 @@ class Character:
             
 
             case "Block":
+                self.heldAction["display"] = "Blocking"
+
                 gameInstance.writeText(f"{self.name} is now blocking.")
             
 
             case "Dodge":
+                self.heldAction["display"] = "Dodging"
+
                 gameInstance.writeText(f"{self.name} moves to dodge.")
             
 
@@ -115,11 +121,11 @@ class Character:
                     choices = {}
 
                     for i, enemy in enumerate(battleInstance.enemies, start = 1):
-                        choices[enemy.name + f" (Enemy #{i})"] = enemy
+                        choices[f"{i}: {enemy.name}"] = enemy
                     
                     choices["Back"] = "BACK"
                     
-                    _, result = noLoopChoice(choices)
+                    _, result = noLoopChoice(choices, False)
                     os.system("cls")
 
                     if result == None:
@@ -182,11 +188,11 @@ class Character:
                     choices = {}
 
                     for i, item in enumerate(self.inventory, start = 1):
-                        choices[f"{item.name} (Item #{i})"] = item
+                        choices[f"{i}: {item.name}"] = item
                     
                     choices["Back"] = "BACK"
 
-                    _, result = noLoopChoice(choices)
+                    _, result = noLoopChoice(choices, False)
                     os.system("cls")
 
                     if result == None:
@@ -236,7 +242,6 @@ class Character:
 
         # Advance steps
         if self.battleDelay[0] > 0:
-            self.heldAction["display"] = f"Winding Up {(self.heldAction["action"])}"
             self.battleDelay[0] -= 1
             
             if self.battleDelay[0] <= 0:
@@ -247,11 +252,8 @@ class Character:
                 else:
                     self.onBeginAction(self.heldAction["action"], gameInstance, battleInstance)
                     returnValue = 1
-                
-                self.heldAction["display"] = f"Doing {(self.heldAction["action"])}"
             
         elif self.battleDelay[1] > 0:
-            self.heldAction["display"] = f"Doing {(self.heldAction["action"])}"
             self.battleDelay[1] -= 1
 
             if self.heldAction["type"] == "ITEM":
