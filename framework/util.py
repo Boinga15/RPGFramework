@@ -88,11 +88,11 @@ def inventoryManagement(game):
                 options2 = {}
 
                 for i, item in enumerate(game.party[charId].inventory):
-                    options2[f"{item.name} ({item.quantity} / {item.maxQuantity}) [Weight: {item.carryCost}] <Item #{i + 1}>"] = item.name
+                    options2[f"{i + 1}: {item.name} ({item.quantity} / {item.maxQuantity}) [Weight: {item.carryCost}]"] = item.name
                 
                 options2["Go Back"] = -1
 
-                itemId, item = noLoopChoice(options2)
+                itemId, item = noLoopChoice(options2, False)
                 os.system("cls")
 
                 if item == -1:
