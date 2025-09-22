@@ -34,6 +34,10 @@ def gameStart(game: Game):
             else:
                 game.infoText(f"{item.name} (X{item.quantity})")
     
+    result = reactionMinigame()
+    print(result)
+    input("\n> ")
+
     newItem = TestItem()
     newItem.quantity = 5
 

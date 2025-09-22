@@ -5,3 +5,4 @@ from .item import *
 from .enemy import *
 from .battle import *
 from .container import *
+from .minigame import *
