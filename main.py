@@ -34,7 +34,7 @@ def gameStart(game: Game):
             else:
                 game.infoText(f"{item.name} (X{item.quantity})")
     
-    result = reactionMinigame()
+    result = timingMinigame()
     print(result)
     input("\n> ")
 
