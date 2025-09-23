@@ -13,7 +13,7 @@ def flushBuffer():
         msvcrt.getch()
 
 # Starts a mash minigame where the player must press space or A & D as fast as they can in the given time limit. Returns the amount of times they pressed the button in the time limit.
-def mashMinigame(givenTime = 5, useSpace = True):
+def mashMinigame(givenTime = 5.0, useSpace = True):
     os.system("cls")
 
     mashAmount = 0
@@ -107,7 +107,7 @@ def reactionMinigame():
     return elapsedTime
 
 # A simple timing minigame which makes the player press space when a number is close to the target percentage. Speed changes how fast the number changes, effectively making the timing minigame harder the higher this value is. Returns how far off the player was from the number numerically.
-def timingMinigame(targetPercentage = 50, speed = -3):
+def timingMinigame(targetPercentage = 50, speed = 3):
     currentValue = 0
     positive = True
 
@@ -120,7 +120,7 @@ def timingMinigame(targetPercentage = 50, speed = -3):
 
     while not keyboard.is_pressed("space"):
         os.system("cls")
-        print(f"Press space when the percentage is {targetPercentage}!")
+        print(f"Press space when the value below is {targetPercentage}!")
         print(f"{currentValue}")
 
         currentValue = ((currentValue + speed) if positive else (currentValue - speed))

@@ -67,6 +67,10 @@ class Battle:
 
         doingBattle = True
 
+        # Call initial displays
+        for enemy in self.enemies:
+            enemy.initialBattleDescription()
+
         def updateDisplay():
             os.system("cls")
 

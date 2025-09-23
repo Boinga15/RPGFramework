@@ -1,9 +1,22 @@
 import os
+import sys
 
 # Pre-Implemented Functions
 # Used to display auto-wrapping text on the console.
 def neatPrint(inp: str, wrapLength: int = 80):
-    pass
+    buffer = ""
+
+    for character in inp:
+        buffer += character
+
+        if len(buffer) >= wrapLength and character == " ":
+            print(buffer)
+            buffer = ""
+    
+    if buffer != "":
+        print(buffer)
+    
+    print("")
 
 # Useful for displaying options to the player. "choices" should be a dictionary of type string --> any. Returns the selected choice's data.
 def choice(choices, displayChoices = True):
